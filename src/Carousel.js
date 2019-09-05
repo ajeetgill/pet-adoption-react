@@ -7,32 +7,41 @@ class Carousel extends React.Component {
         photos: [],
         active: 0
     };
+
     // Not necessary but just a react-handler which take some logic out of render method
     static getDerivedStateFromProps({ media }) {
         let photos = ['http://placecorgi.com/600/600'];
 
         if (media.length) {
-            photos = photos.map(({ large }) => large);
+            photos = media.map(({ large }) => large);
         }
         return { photos };
     }
+
+    handleIndexClick = index => {
+        this.setState({
+            active: index
+        });
+    };
+    // active: +event.target.dataset.index
+
     render() {
         const { photos, active } = this.state;
 
         return (
             <div className='carousel'>
                 <img src={photos[active]} alt='animal' />
-                <div className='carousel-smallerr'>
+                <div className='carousel-smaller'>
                     {photos.map((photo, index) => (
                         // eslint-disable-next-line jsx-a11y/click-events-have-key-events
                         <img
                             key={photo}
-                            onClick={this.handleIndexClick}
-                            date-index={i}
+                            onClick={this.handleIndexClick.bind(this, index)}
+                            // date-index={index}
                             src={photo}
                             className={index === active ? 'active' : ''}
                             alt='animal thumbnail'
-                        ></img>
+                        />
                     ))}
                 </div>
             </div>
